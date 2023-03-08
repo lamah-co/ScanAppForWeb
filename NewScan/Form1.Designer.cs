@@ -116,7 +116,7 @@
             // 
             this.btnAllSettings.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnAllSettings.Enabled = false;
-            this.btnAllSettings.Location = new System.Drawing.Point(128, 214);
+            this.btnAllSettings.Location = new System.Drawing.Point(128, 213);
             this.btnAllSettings.Name = "btnAllSettings";
             this.btnAllSettings.Size = new System.Drawing.Size(153, 29);
             this.btnAllSettings.TabIndex = 7;
@@ -163,7 +163,7 @@
             // ckDuplex
             // 
             this.ckDuplex.AutoSize = true;
-            this.ckDuplex.Location = new System.Drawing.Point(128, 177);
+            this.ckDuplex.Location = new System.Drawing.Point(128, 176);
             this.ckDuplex.Name = "ckDuplex";
             this.ckDuplex.Size = new System.Drawing.Size(65, 17);
             this.ckDuplex.TabIndex = 0;
@@ -201,7 +201,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 178);
+            this.label4.Location = new System.Drawing.Point(9, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 11;
@@ -219,12 +219,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(93, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(94, 26);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -232,7 +232,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 267);
+            this.ClientSize = new System.Drawing.Size(361, 274);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);

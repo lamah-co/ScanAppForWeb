@@ -25,6 +25,7 @@ namespace NewScan
         bool _loadingCaps;
         List<IWebSocketConnection> allSockets;
         WebSocketServer server;
+        List<Byte[]> scanned;
         public Form1()
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace NewScan
             this.ShowInTaskbar = false;
 
             allSockets = new List<IWebSocketConnection>();
+            scanned = new List<Byte[]>();
             server = new WebSocketServer("ws://0.0.0.0:8181");
             server.Start(socket =>
             {
@@ -63,6 +65,7 @@ namespace NewScan
                 {
                     if (message == "1100")
                     {
+                        Console.WriteLine("here");
                         this.Invoke(new Action(()=> {
                             this.WindowState = FormWindowState.Normal;
                         }));
@@ -127,9 +130,10 @@ namespace NewScan
                     if (stream != null)
                     {
                         var outPut = StreamToByte(stream);
+
                         foreach (var socket in allSockets.ToList())
                         {
-                            socket.Send(outPut);
+                            scanned.Add(outPut);
                         }
                     }
                 }
@@ -148,13 +152,13 @@ namespace NewScan
                     btnStartCapture.Enabled = true;
                     LoadSourceCaps();
                 }));
+                Console.WriteLine(scanned.Count);
             };
             _twain.TransferReady += (s, e) =>
             {
                 PlatformInfo.Current.Log.Info("Transferr ready event on thread " + Thread.CurrentThread.ManagedThreadId);
                 e.CancelAll = _stopScan;
             };
-
             // either set sync context and don't worry about threads during events,
             // or don't and use control.invoke during the events yourself
             PlatformInfo.Current.Log.Info("Setup thread = " + Thread.CurrentThread.ManagedThreadId);
@@ -310,6 +314,8 @@ namespace NewScan
             {
                 LoadPaperSize(src.Capabilities.ICapSupportedSizes);
             }
+
+            LoadImageFileType();
             btnAllSettings.Enabled = src.Capabilities.CapEnableDSUIOnly.IsSupported;
             _loadingCaps = false;
         }
@@ -324,6 +330,12 @@ namespace NewScan
                 comboSize.SelectedItem = cur;
             }
            
+        }
+
+        private void LoadImageFileType()
+        {
+            var list = new List<string>(){"jpg", "png", "pdf"};
+            fileTypeCombo.DataSource = list;
         }
 
 
@@ -440,5 +452,7 @@ namespace NewScan
                 //notifyIcon1.ShowBalloonTip(100);
             }
         }
+
+        
     }
 }
