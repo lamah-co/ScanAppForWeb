@@ -315,7 +315,6 @@ namespace NewScan
                 LoadPaperSize(src.Capabilities.ICapSupportedSizes);
             }
 
-            LoadImageFileType();
             btnAllSettings.Enabled = src.Capabilities.CapEnableDSUIOnly.IsSupported;
             _loadingCaps = false;
         }
@@ -331,13 +330,6 @@ namespace NewScan
             }
            
         }
-
-        private void LoadImageFileType()
-        {
-            var list = new List<string>(){"jpg", "png", "pdf"};
-            fileTypeCombo.DataSource = list;
-        }
-
 
         private void LoadDuplex(ICapWrapper<BoolType> cap)
         {
