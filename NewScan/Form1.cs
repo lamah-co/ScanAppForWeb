@@ -3,17 +3,16 @@ using NTwain;
 using NTwain.Data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using iTextSharp.text;
+
 
 namespace NewScan
 {
@@ -63,9 +62,9 @@ namespace NewScan
                 };
                 socket.OnMessage = message =>
                 {
+                    Console.WriteLine($"{message}");
                     if (message == "1100")
                     {
-                        Console.WriteLine("here");
                         this.Invoke(new Action(()=> {
                             this.WindowState = FormWindowState.Normal;
                         }));
@@ -123,7 +122,7 @@ namespace NewScan
                     break;
                 }
 
-                Image img = null;
+                System.Drawing.Image img = null;
                 if (e.NativeData != IntPtr.Zero)
                 {
                     var stream = e.GetNativeImageStream();
@@ -131,10 +130,8 @@ namespace NewScan
                     {
                         var outPut = StreamToByte(stream);
 
-                        foreach (var socket in allSockets.ToList())
-                        {
-                            scanned.Add(outPut);
-                        }
+                        scanned.Add(outPut);
+                        
                     }
                 }
                 else if (!string.IsNullOrEmpty(e.FileDataPath))
@@ -152,7 +149,7 @@ namespace NewScan
                     btnStartCapture.Enabled = true;
                     LoadSourceCaps();
                 }));
-                Console.WriteLine(scanned.Count);
+                SendPDFs();
             };
             _twain.TransferReady += (s, e) =>
             {
@@ -190,6 +187,35 @@ namespace NewScan
             }
         }
 
+       private void SendPDFs()
+        {
+            using(MemoryStream ms = new MemoryStream())
+            {
+                 Document doc = new Document();
+                 iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, ms);
+                 doc.Open();
+            
+                 if (scanned.Count > 0)
+                    {
+                      foreach (var item in scanned)
+                      {
+                          iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(item);
+                          image.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                          image.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
+                          doc.Add(image);
+                      }
+                    doc.Close();
+                    byte[] result = ms.ToArray();
+                    foreach (var socket in allSockets)
+                    {
+                        socket.Send(result);
+                    }
+                    scanned.Clear();
+                }
+            }
+                
+          
+        }
 
 
         #region toolbar
