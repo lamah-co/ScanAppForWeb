@@ -2,6 +2,7 @@
 using NTwain;
 using NTwain.Data;
 using System;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -62,13 +63,17 @@ namespace NewScan
                 };
                 socket.OnMessage = message =>
                 {
-                    Console.WriteLine($"{message}");
-                    if (message == "1100")
+                    Config config = JsonSerializer.Deserialize<Config>(message);
+                    /*if ()
                     {
                         this.Invoke(new Action(()=> {
                             this.WindowState = FormWindowState.Normal;
                         }));
-                    }
+                    }*/
+                    _twain.First().Open();
+                    this.Invoke(new Action(() => {
+                        Scan();
+                    }));
                 };
             });
 
@@ -243,6 +248,7 @@ namespace NewScan
                     first.Click -= SourceMenuItem_Click;
                     btnSources.DropDownItems.Remove(first);
                 }
+                Console.WriteLine(_twain.First().Name);
                 foreach (var src in _twain)
                 {
                     var srcBtn = new ToolStripMenuItem(src.Name);
@@ -277,6 +283,11 @@ namespace NewScan
         }
 
         private void btnStartCapture_Click(object sender, EventArgs e)
+        {
+            Scan();
+        }
+
+        private void Scan()
         {
             if (_twain.State == 4)
             {
@@ -472,5 +483,13 @@ namespace NewScan
         }
 
         
+    }
+
+    public class Config
+    {
+        public string size { get; set; }
+        public string depth { get; set; }
+        public string dpi { get; set; }
+        public Boolean duplex { get; set; }
     }
 }
