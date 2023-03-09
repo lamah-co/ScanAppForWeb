@@ -63,12 +63,17 @@ namespace NewScan
                 };
                 socket.OnMessage = message =>
                 {
-                    // Config config = JsonSerializer.Deserialize<Config>(message);
-                    
-                    _twain.First().Open();
-                    this.Invoke(new Action(() => {
-                        Scan();
-                    }));
+                    if (message == "1000")
+                    {
+                        SendConfirmation();
+                    }
+                     else if (message == "1100")
+                    {
+                        _twain.First().Open();
+                        this.Invoke(new Action(() => {
+                            Scan();
+                        }));
+                    }
                 };
             });
 
@@ -234,6 +239,14 @@ namespace NewScan
                         this.WindowState = FormWindowState.Minimized;
                     }
                 }
+            }
+        }
+
+        private void SendConfirmation()
+        {
+            foreach (var socket in allSockets)
+            {
+                socket.Send("OK");
             }
         }
 
