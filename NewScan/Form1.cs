@@ -22,7 +22,6 @@ namespace NewScan
         ImageCodecInfo _tiffCodecInfo;
         TwainSession _twain;
         bool _stopScan;
-        bool _loadingCaps;
         List<IWebSocketConnection> allSockets;
         WebSocketServer server;
         List<Byte[]> scanned;
