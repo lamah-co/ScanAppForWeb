@@ -63,13 +63,8 @@ namespace NewScan
                 };
                 socket.OnMessage = message =>
                 {
-                    Config config = JsonSerializer.Deserialize<Config>(message);
-                    /*if ()
-                    {
-                        this.Invoke(new Action(()=> {
-                            this.WindowState = FormWindowState.Normal;
-                        }));
-                    }*/
+                    // Config config = JsonSerializer.Deserialize<Config>(message);
+                    
                     _twain.First().Open();
                     this.Invoke(new Action(() => {
                         Scan();
@@ -148,12 +143,6 @@ namespace NewScan
             _twain.SourceDisabled += (s, e) =>
             {
                 PlatformInfo.Current.Log.Info("Source disabled event on thread " + Thread.CurrentThread.ManagedThreadId);
-                this.BeginInvoke(new Action(() =>
-                {
-                    btnStopScan.Enabled = false;
-                    btnStartCapture.Enabled = true;
-                    LoadSourceCaps();
-                }));
                 SendPDFs();
             };
             _twain.TransferReady += (s, e) =>
@@ -222,71 +211,6 @@ namespace NewScan
           
         }
 
-
-        #region toolbar
-
-        private void btnSources_DropDownOpening(object sender, EventArgs e)
-        {
-            if (btnSources.DropDownItems.Count == 2)
-            {
-                ReloadSourceList();
-            }
-        }
-
-        private void reloadSourcesListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ReloadSourceList();
-        }
-
-        private void ReloadSourceList()
-        {
-            if (_twain.State >= 3)
-            {
-                while (btnSources.DropDownItems.IndexOf(sepSourceList) > 0)
-                {
-                    var first = btnSources.DropDownItems[0];
-                    first.Click -= SourceMenuItem_Click;
-                    btnSources.DropDownItems.Remove(first);
-                }
-                Console.WriteLine(_twain.First().Name);
-                foreach (var src in _twain)
-                {
-                    var srcBtn = new ToolStripMenuItem(src.Name);
-                    srcBtn.Tag = src;
-                    srcBtn.Click += SourceMenuItem_Click;
-                    srcBtn.Checked = _twain.CurrentSource != null && _twain.CurrentSource.Name == src.Name;
-                    btnSources.DropDownItems.Insert(0, srcBtn);
-                }
-            }
-        }
-
-        void SourceMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_twain.State > 4) { return; }
-
-            if (_twain.State == 4) { _twain.CurrentSource.Close(); }
-
-            foreach (var btn in btnSources.DropDownItems)
-            {
-                var srcBtn = btn as ToolStripMenuItem;
-                if (srcBtn != null) { srcBtn.Checked = false; }
-            }
-
-            var curBtn = (sender as ToolStripMenuItem);
-            var src = curBtn.Tag as DataSource;
-            if (src.Open() == ReturnCode.Success)
-            {
-                curBtn.Checked = true;
-                btnStartCapture.Enabled = true;
-                LoadSourceCaps();
-            }
-        }
-
-        private void btnStartCapture_Click(object sender, EventArgs e)
-        {
-            Scan();
-        }
-
         private void Scan()
         {
             if (_twain.State == 4)
@@ -300,8 +224,6 @@ namespace NewScan
                     // hide scanner ui if possible
                     if (_twain.CurrentSource.Enable(SourceEnableMode.NoUI, false, this.Handle) == ReturnCode.Success)
                     {
-                        btnStopScan.Enabled = true;
-                        btnStartCapture.Enabled = false;
                         this.WindowState = FormWindowState.Minimized;
                     }
                 }
@@ -309,136 +231,12 @@ namespace NewScan
                 {
                     if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) == ReturnCode.Success)
                     {
-                        btnStopScan.Enabled = true;
-                        btnStartCapture.Enabled = false;
                         this.WindowState = FormWindowState.Minimized;
                     }
                 }
             }
         }
 
-        private void btnStopScan_Click(object sender, EventArgs e)
-        {
-            _stopScan = true;
-        }
-
-        #endregion
-
-        #region cap control
-
-
-        private void LoadSourceCaps()
-        {
-            var src = _twain.CurrentSource;
-            _loadingCaps = true;
-
-            //var test = src.SupportedCaps;
-
-            if (src.Capabilities.ICapPixelType.IsSupported)
-            {
-                LoadDepth(src.Capabilities.ICapPixelType);
-            }
-            if (src.Capabilities.ICapXResolution.IsSupported && src.Capabilities.ICapYResolution.IsSupported)
-            {
-                LoadDPI(src.Capabilities.ICapXResolution);
-            }
-            // TODO: find out if this is how duplex works or also needs the other option
-            if (src.Capabilities.CapDuplexEnabled.IsSupported)
-            {
-                LoadDuplex(src.Capabilities.CapDuplexEnabled);
-            }
-            if (src.Capabilities.ICapSupportedSizes.IsSupported)
-            {
-                LoadPaperSize(src.Capabilities.ICapSupportedSizes);
-            }
-
-            btnAllSettings.Enabled = src.Capabilities.CapEnableDSUIOnly.IsSupported;
-            _loadingCaps = false;
-        }
-
-        private void LoadPaperSize(ICapWrapper<SupportedSize> cap)
-        {
-            var list = cap.GetValues().ToList();
-            comboSize.DataSource = list;
-            var cur = cap.GetCurrent();
-            if (list.Contains(cur))
-            {
-                comboSize.SelectedItem = cur;
-            }
-           
-        }
-
-        private void LoadDuplex(ICapWrapper<BoolType> cap)
-        {
-            ckDuplex.Checked = cap.GetCurrent() == BoolType.True;
-        }
-
-
-        private void LoadDPI(ICapWrapper<TWFix32> cap)
-        {
-            // only allow dpi of certain values for those source that lists everything
-            var list = cap.GetValues().Where(dpi => (dpi % 50) == 0).ToList();
-            comboDPI.DataSource = list;
-            var cur = cap.GetCurrent();
-            if (list.Contains(cur))
-            {
-                comboDPI.SelectedItem = cur;
-            }
-        }
-
-        private void LoadDepth(ICapWrapper<PixelType> cap)
-        {
-            var list = cap.GetValues().ToList();
-            comboDepth.DataSource = list;
-            var cur = cap.GetCurrent();
-            if (list.Contains(cur))
-            {
-                comboDepth.SelectedItem = cur;
-            }
-        }
-
-        private void comboSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_loadingCaps && _twain.State == 4)
-            {
-                var sel = (SupportedSize)comboSize.SelectedItem;
-                _twain.CurrentSource.Capabilities.ICapSupportedSizes.SetValue(sel);
-            }
-        }
-
-        private void comboDepth_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_loadingCaps && _twain.State == 4)
-            {
-                var sel = (PixelType)comboDepth.SelectedItem;
-                _twain.CurrentSource.Capabilities.ICapPixelType.SetValue(sel);
-            }
-        }
-
-        private void comboDPI_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_loadingCaps && _twain.State == 4)
-            {
-                var sel = (TWFix32)comboDPI.SelectedItem;
-                _twain.CurrentSource.Capabilities.ICapXResolution.SetValue(sel);
-                _twain.CurrentSource.Capabilities.ICapYResolution.SetValue(sel);
-            }
-        }
-
-        private void ckDuplex_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_loadingCaps && _twain.State == 4)
-            {
-                _twain.CurrentSource.Capabilities.CapDuplexEnabled.SetValue(ckDuplex.Checked ? BoolType.True : BoolType.False);
-            }
-        }
-
-        private void btnAllSettings_Click(object sender, EventArgs e)
-        {
-            _twain.CurrentSource.Enable(SourceEnableMode.ShowUIOnly, true, this.Handle);
-        }
-
-        #endregion
         public static byte[] StreamToByte(Stream input)
         {
             using (MemoryStream ms = new MemoryStream())
@@ -485,11 +283,4 @@ namespace NewScan
         
     }
 
-    public class Config
-    {
-        public string size { get; set; }
-        public string depth { get; set; }
-        public string dpi { get; set; }
-        public Boolean duplex { get; set; }
-    }
 }
