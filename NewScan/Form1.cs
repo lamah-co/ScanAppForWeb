@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using iTextSharp.text;
-
+using iTextSharp.text.pdf;
 
 namespace NewScan
 {
@@ -66,10 +66,12 @@ namespace NewScan
                     {
                         SendConfirmation();
                     }
-                     else if (message == "1100")
+                    else if (message == "1100")
                     {
+                        Console.Write("hi");
                         _twain.First().Open();
-                        this.Invoke(new Action(() => {
+                        this.Invoke(new Action(() =>
+                        {
                             Scan();
                         }));
                     }
@@ -135,7 +137,7 @@ namespace NewScan
                         var outPut = StreamToByte(stream);
 
                         scanned.Add(outPut);
-                        
+
                     }
                 }
                 else if (!string.IsNullOrEmpty(e.FileDataPath))
@@ -185,23 +187,23 @@ namespace NewScan
             }
         }
 
-       private void SendPDFs()
+        private void SendPDFs()
         {
-            using(MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
-                 Document doc = new Document();
-                 iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, ms);
-                 doc.Open();
-            
-                 if (scanned.Count > 0)
+                Document doc = new Document();
+                iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(doc, ms);
+                doc.Open();
+
+                if (scanned.Count > 0)
+                {
+                    foreach (var item in scanned)
                     {
-                      foreach (var item in scanned)
-                      {
-                          iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(item);
-                          image.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
-                          image.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
-                          doc.Add(image);
-                      }
+                        iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(item);
+                        image.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                        image.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
+                        doc.Add(image);
+                    }
                     doc.Close();
                     byte[] result = ms.ToArray();
                     foreach (var socket in allSockets)
@@ -211,8 +213,8 @@ namespace NewScan
                     scanned.Clear();
                 }
             }
-                
-          
+
+
         }
 
         private void Scan()
@@ -292,7 +294,6 @@ namespace NewScan
             }
         }
 
-        
-    }
 
+    }
 }
