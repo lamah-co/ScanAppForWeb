@@ -342,8 +342,9 @@ ASALocalRun/
 .mfractor/
 
 # bin/debug content
-bin/Debug
-obj/Debug
+/NewScan/bin/Debug/*
+/NewScan/obj/Debug/*
+
 
 ### OSX ###
 
@@ -379,3 +380,9 @@ Temporary Items
 InteropTests/NativeTests/out
 /src/System.Windows.Forms/src/comctl32.dll
 *.received.*
+/NewScan/test/TextFile1.txt
+/NewScan/obj/Debug/NewScan.exe
+/NewScan/obj/Debug/NewScan.pdb
+
+/NewScan/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/NewScan/obj/Debug/NewScan.csproj.FileListAbsolute.txt
