@@ -14,6 +14,7 @@ using System.Threading;
 using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Microsoft.Win32;
 
 namespace NewScan
 {
@@ -28,6 +29,9 @@ namespace NewScan
         public Form1()
         {
             InitializeComponent();
+
+            RegistryKey registry = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            registry.SetValue("Lamah Archive Scanner", Application.ExecutablePath.ToString());
 
             if (NTwain.PlatformInfo.Current.IsApp64Bit)
             {

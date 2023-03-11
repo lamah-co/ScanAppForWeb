@@ -1088,9 +1088,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Setup"
+        "ProductName" = "8:LamahArchiveScanner"
         "ProductCode" = "8:{DAA82CB1-94DA-4830-8E03-908C0F6D83C5}"
-        "PackageCode" = "8:{569C58F9-4099-49BF-A51B-A59557687EF1}"
+        "PackageCode" = "8:{1CEB3514-ABD8-4A97-B382-65BD2583F5C6}"
         "UpgradeCode" = "8:{EFAF6C79-24DA-428F-AF59-8091EA4E3617}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1098,12 +1098,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:Lamah"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Lamah"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -1212,7 +1212,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D471ED459AD447ECAF0E8AFE39902496"
             {
-            "Name" = "8:Scan App"
+            "Name" = "8:Lamah Archive Scanner"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -1625,7 +1625,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
             {
-            "SourcePath" = "8:..\\NewScan\\obj\\Debug\\NewScan.exe"
+            "SourcePath" = "8:..\\NewScan\\obj\\Debug\\Lamah Archive Scanner.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_3E89C3C09AD04B02BB72A85798CB473F"
