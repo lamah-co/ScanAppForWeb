@@ -26,12 +26,16 @@ namespace NewScan
         List<IWebSocketConnection> allSockets;
         WebSocketServer server;
         List<Byte[]> scanned;
+        RegistryKey registry;
         public Form1()
         {
             InitializeComponent();
 
-            RegistryKey registry = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            registry.SetValue("Lamah Archive Scanner", Application.ExecutablePath.ToString());
+            registry = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (registry != null)
+            {
+                registry.SetValue("Lamah Archive Scanner", Application.ExecutablePath.ToString());
+            }
 
             if (NTwain.PlatformInfo.Current.IsApp64Bit)
             {
@@ -72,12 +76,18 @@ namespace NewScan
                     }
                     else if (message == "1100")
                     {
-                        Console.Write("hi");
-                        _twain.First().Open();
-                        this.Invoke(new Action(() =>
+                        try
                         {
-                            Scan();
-                        }));
+                            _twain.First().Open();
+                            this.Invoke(new Action(() =>
+                            {
+                                Scan();
+                            }));
+                        } catch (Exception ex)
+                        {
+                            NoDeviceResponse();
+                        }
+                        
                     }
                 };
             });
@@ -252,6 +262,14 @@ namespace NewScan
             foreach (var socket in allSockets)
             {
                 socket.Send("OK");
+            }
+        }
+
+        private void NoDeviceResponse()
+        {
+            foreach (var socket in allSockets)
+            {
+                socket.Send("NO DEVICE");
             }
         }
 

@@ -244,12 +244,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_82C49D4068BAAAA177344A0F9BDA5B15"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -361,6 +355,12 @@
         "OwnerKey" = "8:_AEE55B7316FC87190C286C084F60391F"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_82C49D4068BAAAA177344A0F9BDA5B15"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -379,6 +379,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -395,12 +411,84 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_885919A97E9C46F48FCB195853041D2E"
+            {
+            "Name" = "8:Primary output from NewScan (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_F13B4629_BAC6_45C8_966F_D82878CDD65B"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_9C2C0EA16A8341728F404A77632BDD96"
+            {
+            "Name" = "8:Primary output from NewScan (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_B205A54C_9EF7_42FE_8F45_976894C8C274"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_AFE20C09DEF74249AE4C404A91A3E044"
+            {
+            "Name" = "8:Primary output from NewScan (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_756AD532_BC61_4CB3_86FA_7469E8D63B9C"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B34D6B9569F44ACE88B61658B4777FDC"
+            {
+            "Name" = "8:Primary output from NewScan (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_63DB712F0EBF4F13B9CD5E3EB2C7B413"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_E173A73B_71AD_499E_BAE1_30C7EC2B12A4"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -1090,7 +1178,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:LamahArchiveScanner"
         "ProductCode" = "8:{DAA82CB1-94DA-4830-8E03-908C0F6D83C5}"
-        "PackageCode" = "8:{1CEB3514-ABD8-4A97-B382-65BD2583F5C6}"
+        "PackageCode" = "8:{BE38D071-DD74-4D31-828C-81364F61F0B2}"
         "UpgradeCode" = "8:{EFAF6C79-24DA-428F-AF59-8091EA4E3617}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

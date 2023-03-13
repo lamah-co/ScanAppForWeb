@@ -41,7 +41,11 @@ namespace NewScan
 
         private void SplashScreen_Load(object sender, EventArgs e)
         {
-            registry.SetValue("Scan App", Application.ExecutablePath.ToString());
+            if (registry != null && Application.ExecutablePath != null)
+            {
+                registry.SetValue("Scan App", Application.ExecutablePath.ToString());
+            }
+            
         }
     }
 }
