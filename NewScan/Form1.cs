@@ -245,6 +245,9 @@ namespace NewScan
                     if (_twain.CurrentSource.Enable(SourceEnableMode.NoUI, false, this.Handle) == ReturnCode.Success)
                     {
                         this.WindowState = FormWindowState.Minimized;
+                    } else
+                    {
+                        CancelScan();
                     }
                 }
                 else
@@ -252,8 +255,20 @@ namespace NewScan
                     if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) == ReturnCode.Success)
                     {
                         this.WindowState = FormWindowState.Minimized;
+
+                    } else
+                    {
+                        CancelScan();
                     }
                 }
+            }
+        }
+
+        private void CancelScan()
+        {
+            foreach (var socket in allSockets)
+            {
+                socket.Send("CANCEL");
             }
         }
 
